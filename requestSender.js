@@ -1,7 +1,6 @@
 const http = require('http');
 
 http.get('http://localhost:3000/api', (res) => {
-
     let data = '';
 
     res.on('data', chunk => {
@@ -9,8 +8,14 @@ http.get('http://localhost:3000/api', (res) => {
     });
 
     res.on('end', () => {
-        console.log("Response from server:");
-        console.log(JSON.parse(data));
+        try {
+            const parsedData = JSON.parse(data);
+            console.log("Response from server:");
+            console.log(parsedData);
+        } catch (err) {
+            console.log("Invalid JSON response:", err.message);
+            console.log("Raw response:", data);
+        }
     });
 
 }).on('error', (err) => {
